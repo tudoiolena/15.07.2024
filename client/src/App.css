@@ -1,0 +1,22 @@
+*,
+html {
+  font-family: "Courier New", Helvetica, sans-serif;
+  font-size: large;
+}
+
+form {
+  margin-left: 25px;
+  margin-top: 25px;
+}
+
+input {
+  border: 1px solid black;
+}
+
+button {
+  padding: 0 5px;
+}
+
+p {
+  color: red;
+}
