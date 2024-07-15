@@ -172,7 +172,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.static(CLIENT_BUILD_PATH));
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.resolve(CLIENT_BUILD_PATH, "index.html"));
 });
 
@@ -180,7 +180,6 @@ const io = new SocketIOServer(server, {
   cors: {
     origin: "http://localhost:5173",
     methods: ["GET", "POST"],
-    credentials: true,
   },
 });
 
