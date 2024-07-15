@@ -8,7 +8,7 @@ const express = require("express");
 const LS = "ls";
 const CURR_DIR: string = __dirname;
 const DATA_DIR: string = path.resolve(CURR_DIR, "data");
-const CLIENT_BUILD_PATH = path.resolve(CURR_DIR, "../client/dist");
+const CLIENT_BUILD_PATH = path.resolve(CURR_DIR, "public");
 const FORBIDDEN_OPTIONS: string[] = ["&&", ";", "|", "`", ",", "'", '"'];
 const ALLOWED_SHORT_OPTIONS: string =
   "aAbBcCdDfFgGhHiIlLmMnNoOpPqQrRsStTuUvVwWxX1Z";

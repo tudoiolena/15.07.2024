@@ -9,6 +9,12 @@ const App: React.FC = () => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
 
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    socket.emit("message", command);
+    setCommand("");
+  };
+
   useEffect(() => {
     socket.on("content", (data: string) => {
       setError("");
@@ -26,15 +32,9 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    socket.emit("message", command);
-    setCommand("");
-  };
-
   return (
-    <div className="App">
-      <form onSubmit={handleSubmit}>
+    <div>
+      <form onSubmit={onSubmit}>
         <input
           type="text"
           value={command}
