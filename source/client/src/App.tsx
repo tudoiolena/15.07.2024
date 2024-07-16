@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import "./App.css";
 
-const socket = io(`http://localhost:8080`);
+const socket = io(`http://localhost:3001`);
 
 const App: React.FC = () => {
   const [command, setCommand] = useState("");

@@ -1,14 +1,14 @@
-const http = require("node:http");
-const { Server: SocketIOServer, Socket } = require("socket.io");
-const path = require("node:path");
-const { spawn } = require("node:child_process");
-const fsPromises = require("node:fs/promises");
-const express = require("express");
+import http = require("node:http");
+import { Server as SocketIOServer, Socket } from "socket.io";
+import path = require("node:path");
+import { spawn } from "node:child_process";
+import fsPromises = require("node:fs/promises");
+import express = require("express");
 
 const LS = "ls";
 const CURR_DIR: string = __dirname;
 const DATA_DIR: string = path.resolve(CURR_DIR, "data");
-const CLIENT_BUILD_PATH = path.resolve(CURR_DIR, "public");
+// const CLIENT_BUILD_PATH = path.resolve(CURR_DIR, "public");
 const FORBIDDEN_OPTIONS: string[] = ["&&", ";", "|", "`", ",", "'", '"'];
 const ALLOWED_SHORT_OPTIONS: string =
   "aAbBcCdDfFgGhHiIlLmMnNoOpPqQrRsStTuUvVwWxX1Z";
@@ -139,20 +139,20 @@ async function performLsCommand(command: string): Promise<string> {
   });
 }
 
-function response(socket: typeof Socket, event: string, data: string) {
+function response(socket: Socket, event: string, data: string) {
   socket.emit(event, data);
 }
 
-function successResponse(socket: typeof Socket, data: string) {
+function successResponse(socket: Socket, data: string) {
   return response(socket, "content", data);
 }
 
-function errorResponse(socket: typeof Socket, data: string) {
+function errorResponse(socket: Socket, data: string) {
   return response(socket, "error", data);
 }
 
 function socketWrapper(handlerFunction) {
-  return function (socket: typeof Socket) {
+  return function (socket: Socket) {
     socket.on("message", async (data) => {
       try {
         const response = await handlerFunction(socket, data);
@@ -161,7 +161,7 @@ function socketWrapper(handlerFunction) {
         if (err instanceof SocketError) {
           errorResponse(socket, err.message);
         } else {
-          errorResponse(socket, "unknown");
+          errorResponse(socket, err.message || "unknown");
         }
       }
     });
@@ -171,19 +171,19 @@ function socketWrapper(handlerFunction) {
 const app = express();
 const server = http.createServer(app);
 
-app.use(express.static(CLIENT_BUILD_PATH));
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve(CLIENT_BUILD_PATH, "index.html"));
-});
+// app.use(express.static(CLIENT_BUILD_PATH));
+// app.get("/", (req, res) => {
+//   res.sendFile(path.resolve(CLIENT_BUILD_PATH, "index.html"));
+// });
 
 const io = new SocketIOServer(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
 
-io.on("connection", (socket: typeof Socket) => {
+io.on("connection", (socket: Socket) => {
   handleLsCommand(socket);
 });
 
@@ -199,8 +199,8 @@ const handleLsCommand = socketWrapper(
   }
 );
 
-server.listen(8080, () => {
-  console.log("Server is listening on port 8080");
+server.listen(3001, () => {
+  console.log("Server is listening on port 3001");
 });
 
 class SocketError extends Error {

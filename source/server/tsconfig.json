@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "rootDir": "../server",
-    "outDir": "../dist"
+    "rootDir": ".",
+    "outDir": "./dist"
   },
-  "include": ["../server/**/*.ts"],
+  "files": ["index.ts"],
   "exclude": ["node_modules", "dist"]
 }

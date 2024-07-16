@@ -1,8 +1,39 @@
+name: "drv1"
+
 services:
-  app:
+  server:
+    #    image: app-drv1-node:latest
     build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: my-app
+      context: ./docker/node
+      args:
+        - UID=1000
+        - GID=1000
+        - USER_NAME=dev
+    user: 1000:1000
+    volumes:
+      - ./source:/app
     ports:
-      - "8080:8080"
+      - 3001:3001
+    working_dir: /app/server
+    command:
+      - npm
+      - run
+      - watch
+
+  client:
+    #    image: app-drv1-node:latest
+    build:
+      context: ./docker/node
+      args:
+        - UID=1000
+        - GID=1000
+        - USER_NAME=dev
+    user: 1000:1000
+    volumes:
+      - ./source/client:/app
+    ports:
+      - 3000:3000
+    command:
+      - npm
+      - run
+      - dev
